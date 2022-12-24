@@ -2,18 +2,20 @@
 
 Code for TOC Final Project
 
-A Line bot based on a finite state machine to do weather
+A Line bot based on a finite state machine to forecast weather
 
 ## Setup
 
 ### Basic setting of env
 **Know Channel access token in linebot**
+
 **Know Channel serect in linebot**
     
 ### Prerequisite
-* Python 3.6
+* Python 3.6.7
 * Pipenv
 * HTTPS Server
+* pygraphviz 1.6
 
 #### Install Dependency
 ```sh
@@ -43,7 +45,7 @@ ngrok http 8000
 
 After that, `ngrok` would generate a https URL.
 
-if you shut down your computer,you need to restart the Webhook URL in linebot because ngrok will give you another https URL.
+if you shut down your computer,you need to reedit the Webhook URL in linebot because ngrok will give you another https URL.
 
 #### Run the sever
 
@@ -51,15 +53,17 @@ if you shut down your computer,you need to restart the Webhook URL in linebot be
 python app.py
 ```
 ## Finite State Machine
-![fsm](./img/show-fsm.png)
+![fsm](https://raw.githubusercontent.com/neil0823/finalproject/master/fsm.png)
 
 ## How to get weather data?
 1.We need to go to the website [click here](https://opendata.cwb.gov.tw/user/authkey)
+
 2.`Create an account` of its member (Facebook `can't` login)
+
 3.Get authorization code
+
 4.Find the data you want(`don't choose weekly weather forecast`,my laptop `crashed` three times because I tried to open it)
-We can see this
-![web](https://www.messenger.com/messenger_media/?attachment_id=1140188200015834&message_id=mid.%24cAAAB9Ppn2PaLcF6QdGFPxlLl4uhc&thread_id=100061052355303)
+
 5.Create a python program(to get data)
 We can know that parameter `location` in json file is a `list`,so we just need to `find the elements` of the list and `match` in the program you created.
 
@@ -120,14 +124,13 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
                 晴時多雲，稍有寒意
                 2022-12-24 06:00:00~2022-12-24 18:00:00
                 晴時多雲，稍有寒意
-    * Input besides three words above 
+    * Input besides three words above: 
 	   * Reply: "Please enter 'weather', 'rain' or 'temperature' to search today weather" 
 	   because of this part of code
 	   ```sh
         if response == False:
             send_text_message(event.reply_token, "Please enter 'weather', 'rain' or 'temperature' to search today weather")
         ```
-                
 
 ## Reference
 Thanks:
