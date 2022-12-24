@@ -1,22 +1,18 @@
-# TOC Project 2020
+# TOC Final Project 2022
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
+Code for TOC Final Project
 
-[![Known Vulnerabilities](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020/badge.svg)](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020)
-
-
-Template Code for TOC Project 2020
-
-A Line bot based on a finite state machine
-
-More details in the [Slides](https://hackmd.io/@TTW/ToC-2019-Project#) and [FAQ](https://hackmd.io/s/B1Xw7E8kN)
+A Line bot based on a finite state machine to do weather
 
 ## Setup
 
+### Basic setting of env
+**Know Channel access token in linebot**
+**Know Channel serect in linebot**
+    
 ### Prerequisite
 * Python 3.6
 * Pipenv
-* Facebook Page and App
 * HTTPS Server
 
 #### Install Dependency
@@ -31,25 +27,13 @@ pipenv shell
 ```
 
 * pygraphviz (For visualizing Finite State Machine)
-    * [Setup pygraphviz on Ubuntu](http://www.jianshu.com/p/a3da7ecc5303)
-	* [Note: macOS Install error](https://github.com/pygraphviz/pygraphviz/issues/100)
-
-
-#### Secret Data
-You should generate a `.env` file to set Environment Variables refer to our `.env.sample`.
-`LINE_CHANNEL_SECRET` and `LINE_CHANNEL_ACCESS_TOKEN` **MUST** be set to proper values.
-Otherwise, you might not be able to run your code.
+	* if you `don't install C++ compiler`,it `can't` successfully installed in python.
+###
 
 #### Run Locally
-You can either setup https server or using `ngrok` as a proxy.
+Using `ngrok` as a proxy.
 
-#### a. Ngrok installation
-* [ macOS, Windows, Linux](https://ngrok.com/download)
-
-or you can use Homebrew (MAC)
-```sh
-brew cask install ngrok
-```
+#### How to use Ngrok?
 
 **`ngrok` would be used in the following instruction**
 
@@ -59,97 +43,94 @@ ngrok http 8000
 
 After that, `ngrok` would generate a https URL.
 
+if you shut down your computer,you need to restart the Webhook URL in linebot because ngrok will give you another https URL.
+
 #### Run the sever
 
 ```sh
-python3 app.py
+python app.py
 ```
-
-#### b. Servo
-
-Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
-
-
 ## Finite State Machine
 ![fsm](./img/show-fsm.png)
 
+## How to get weather data?
+1.We need to go to the website [click here](https://opendata.cwb.gov.tw/user/authkey)
+2.`Create an account` of its member (Facebook `can't` login)
+3.Get authorization code
+4.Find the data you want(`don't choose weekly weather forecast`,my laptop `crashed` three times because I tried to open it)
+We can see this
+![web](https://www.messenger.com/messenger_media/?attachment_id=1140188200015834&message_id=mid.%24cAAAB9Ppn2PaLcF6QdGFPxlLl4uhc&thread_id=100061052355303)
+5.Create a python program(to get data)
+We can know that parameter `location` in json file is a `list`,so we just need to `find the elements` of the list and `match` in the program you created.
+
+* This file have different time periods 
+For example:I'm in **14:00**,the start time is **12:00**
+Thus,we can know this file `initial start time(index 0)` is `the time depending on where you at`
+```sh
+weather_elements[0]["time"][0]["startTime"]
+```
+`initial end time` is **18:00**
+```sh
+weather_elements[0]["time"][0]["endTime"]
+```
+You  can see that `time period` is `12:00~18:00`,but we need to know weather in a whole day,not a period of time.
+Use `for loop`
+```sh
+for i in range(0,3):
+ start_time = weather_elements[0]["time"][i]["startTime"]
+end_time = weather_elements[0]["time"][i]["endTime"]
+```
+So we can know the weather in`12:00~18:00 tomorrow`(36hrs)
+other parameters follow the same pattern
 ## Usage
 The initial state is set to `user`.
 
-Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
+Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.I add a new state because this project `needs` to have at least `four states`.Don't forget to include the program that you match json file(You need to get data in that program).
 
 * user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
+    ```sh
+   ret+=start_time +"~"+ end_time+"\n"  +"最低溫 : "+ min_tem+"度"+"\n" +"最高溫 : "+ max_tem +"度"+"\n\n\n"
+    ```
+	* Input: `"temperature"`
+		* Reply: "臺南市
+                2022-12-23 12:00:00~2022-12-23 18:00:00
+                最低溫 : 16度
+                最高溫 : 20度
+                2022-12-23 18:00:00~2022-12-24 06:00:00
+                最低溫 : 11度
+                最高溫 : 16度
+                2022-12-24 06:00:00~2022-12-24 18:00:00
+                最低溫 : 11度
+                最高溫 : 20度"
 
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
+	* Input: `"rain"` 
+	   * Reply:   "臺南市
+                2022-12-23 12:00:00~2022-12-23 18:00:00
+                降雨機率:0
+                2022-12-23 18:00:00~2022-12-24 06:00:00
+                降雨機率:0
+                2022-12-24 06:00:00~2022-12-24 18:00:00
+                降雨機率:0
 
-## Deploy
-Setting to deploy webhooks on Heroku.
-
-### Heroku CLI installation
-
-* [macOS, Windows](https://devcenter.heroku.com/articles/heroku-cli)
-
-or you can use Homebrew (MAC)
-```sh
-brew tap heroku/brew && brew install heroku
-```
-
-or you can use Snap (Ubuntu 16+)
-```sh
-sudo snap install --classic heroku
-```
-
-### Connect to Heroku
-
-1. Register Heroku: https://signup.heroku.com
-
-2. Create Heroku project from website
-
-3. CLI Login
-
-	`heroku login`
-
-### Upload project to Heroku
-
-1. Add local project to Heroku project
-
-	heroku git:remote -a {HEROKU_APP_NAME}
-
-2. Upload project
-
-	```
-	git add .
-	git commit -m "Add code"
-	git push -f heroku master
-	```
-
-3. Set Environment - Line Messaging API Secret Keys
-
-	```
-	heroku config:set LINE_CHANNEL_SECRET=your_line_channel_secret
-	heroku config:set LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
-	```
-
-4. Your Project is now running on Heroku!
-
-	url: `{HEROKU_APP_NAME}.herokuapp.com/callback`
-
-	debug command: `heroku logs --tail --app {HEROKU_APP_NAME}`
-
-5. If fail with `pygraphviz` install errors
-
-	run commands below can solve the problems
-	```
-	heroku buildpacks:set heroku/python
-	heroku buildpacks:add --index 1 heroku-community/apt
-	```
-
-	refference: https://hackmd.io/@ccw/B1Xw7E8kN?type=view#Q2-如何在-Heroku-使用-pygraphviz
+    * Input: `"weather"` 
+	   * Reply:   "臺南市
+                2022-12-23 12:00:00~2022-12-23 18:00:00
+                晴時多雲，稍有寒意
+                2022-12-23 18:00:00~2022-12-24 06:00:00
+                晴時多雲，稍有寒意
+                2022-12-24 06:00:00~2022-12-24 18:00:00
+                晴時多雲，稍有寒意
+    * Input besides three words above 
+	   * Reply: "Please enter 'weather', 'rain' or 'temperature' to search today weather" 
+	   because of this part of code
+	   ```sh
+        if response == False:
+            send_text_message(event.reply_token, "Please enter 'weather', 'rain' or 'temperature' to search today weather")
+        ```
+                
 
 ## Reference
+Thanks:
 [Pipenv](https://medium.com/@chihsuan/pipenv-更簡單-更快速的-python-套件管理工具-135a47e504f4) ❤️ [@chihsuan](https://github.com/chihsuan)
 
 [TOC-Project-2019](https://github.com/winonecheng/TOC-Project-2019) ❤️ [@winonecheng](https://github.com/winonecheng)

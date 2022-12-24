@@ -27,7 +27,7 @@ def get_data1():
             comfort = weather_elements[3]["time"][i]["parameter"]["parameterName"]
             max_tem = weather_elements[4]["time"][i]["parameter"]["parameterName"]
 
-            ret+=start_time +"~"+ end_time+"\n" + weather_state+","+ comfort+"\n\n\n"
+            ret+=start_time +"~"+ end_time+"\n" + weather_state+","+ comfort+"\n"
 
   
         return ret   
@@ -63,7 +63,7 @@ def get_data2():
             comfort = weather_elements[3]["time"][i]["parameter"]["parameterName"]
             max_tem = weather_elements[4]["time"][i]["parameter"]["parameterName"]
 
-            ret+=start_time +"~"+ end_time+"\n" +"降雨機率 : "+ rain_prob +"\n\n\n"
+            ret+=start_time +"~"+ end_time+"\n" +"降雨機率 : "+ rain_prob +"\n"
 
   
         return ret   
@@ -136,7 +136,7 @@ def get_data():
             comfort = weather_elements[3]["time"][i]["parameter"]["parameterName"]
             max_tem = weather_elements[4]["time"][i]["parameter"]["parameterName"]
 
-            ret+=start_time +"~"+ end_time+"\n" +"降雨機率 : "+ rain_prob+ "%"+"\n" +"最低溫 : "+ min_tem+"度"+"\n" +"最高溫 : "+ max_tem+"\n" + weather_state+","+ comfort+"\n\n\n"
+            ret+=start_time +"~"+ end_time+"\n" +"降雨機率 : "+ rain_prob+ "%"+"\n" +"最低溫 : "+ min_tem+"度"+"\n" +"最高溫 : "+ max_tem+"\n" + weather_state+","+ comfort+"\n"
 
   
         return ret   
