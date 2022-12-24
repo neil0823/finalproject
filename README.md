@@ -96,34 +96,62 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
    ret+=start_time +"~"+ end_time+"\n"  +"最低溫 : "+ min_tem+"度"+"\n" +"最高溫 : "+ max_tem +"度"+"\n\n\n"
     ```
 	* Input: `"temperature"`
-		* Reply: "臺南市
+	
+		* Reply:
+		
+		        臺南市
+		
                 2022-12-23 12:00:00~2022-12-23 18:00:00
+
                 最低溫 : 16度
+                
                 最高溫 : 20度
+                
                 2022-12-23 18:00:00~2022-12-24 06:00:00
+                
                 最低溫 : 11度
+                
                 最高溫 : 16度
+                
                 2022-12-24 06:00:00~2022-12-24 18:00:00
+                
                 最低溫 : 11度
-                最高溫 : 20度"
+                
+                最高溫 : 20度
 
 	* Input: `"rain"` 
-	   * Reply:   "臺南市
+	
+	   * Reply: 
+	            臺南市
+
                 2022-12-23 12:00:00~2022-12-23 18:00:00
+                
                 降雨機率:0
+                
                 2022-12-23 18:00:00~2022-12-24 06:00:00
+                
                 降雨機率:0
+                
                 2022-12-24 06:00:00~2022-12-24 18:00:00
+                
                 降雨機率:0
 
     * Input: `"weather"` 
-	   * Reply:   "臺南市
+	   * Reply:   
+	            臺南市
+	            
                 2022-12-23 12:00:00~2022-12-23 18:00:00
+                
                 晴時多雲，稍有寒意
+                
                 2022-12-23 18:00:00~2022-12-24 06:00:00
+                
                 晴時多雲，稍有寒意
+                
                 2022-12-24 06:00:00~2022-12-24 18:00:00
+                
                 晴時多雲，稍有寒意
+                
     * Input besides three words above: 
 	   * Reply: "Please enter 'weather', 'rain' or 'temperature' to search today weather" 
 	   because of this part of code
