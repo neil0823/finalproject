@@ -4,7 +4,7 @@ import json
 def get_data1():
     url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-EB318A2B-32A0-447F-9E3B-3D129A05E43F&locationName=%E8%87%BA%E5%8D%97%E5%B8%82"
     params = {
-        "Authorization": "CWB-EB318A2B-32A0-447F-9E3B-3D129A05E43F",
+        "Authorization": "CWB-4FEAD7BA-ED96-412B-A826-56D24D104752",
         "locationName": "台南市",
     }
 
